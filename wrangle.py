@@ -100,17 +100,26 @@ def zillow_engineering(zillow_df):
     
     return zillow_df
 
-def handle_outliers(col):
-    q1, q3
-    
+def handle_outliers(df , col, lquan, upquan):
+    q1 = df[col].quantile(lquan)
+    q3 = df[col].quantile(upquan)
+    iqr = q3-q1 #Interquartile range
+    lower_bound  = q1-1.5*iqr
+    upper_bound = q3+1.5*iqr
+    if lower_bound < 0:
+        lower_bound = 0
+    if upper_bound > df[col].max():
+        upper_bound = df[col].max()
+    df_out = df.loc[(df[col] > lower_bound) & (df[col] < upper_bound)]
+    return df_out
 
-
+def get_dummies(df, col_names):
+    for i in col_names:
+        dummy = pd.get_dummies(df[i], drop_first=True)
+        df = pd.concat([df,dummy] , axis=1)
+    df = df.drop(columns = col_names)
+    return df
     
-    
-    
-    
-    return zillow_df
-  
     
 def split_for_model(df):
     '''
