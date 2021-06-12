@@ -16,7 +16,7 @@ def get_heatmap(df):
 def plot_variable_pairs(df, cont_vars = 2):
     combos = itertools.combinations(df,cont_vars)
     for i in combos:
-        plt.figure(figsize=(10,5))
+        plt.figure(figsize=(8,3))
         sns.regplot(data=df, x=i[0], y =i[1],line_kws={"color":"red"})
         plt.show()
         
@@ -29,7 +29,7 @@ def month_to_year(df):
 def plot_cat_and_cont(cat_var, con_var, df):
     for i in cat_var:
         for j in con_var:
-            plt.figure(figsize=(10,5))
+            plt.figure(figsize=(9,5))
             plt.subplot(131)
             sns.swarmplot(x=i, y=j, data=df)
             plt.subplot(132)

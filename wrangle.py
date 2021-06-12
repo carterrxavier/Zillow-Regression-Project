@@ -58,9 +58,10 @@ def get_zillow_data():
     
     else:
         query =  '''
-        select bedroomcnt,bathroomcnt,calculatedfinishedsquarefeet,taxvaluedollarcnt,yearbuilt,taxamount, fips, propertylandusetypeid from properties_2017
-        where propertylandusetypeid = 261
-        '''
+      select properties_2017.parcelid, bedroomcnt,bathroomcnt,calculatedfinishedsquarefeet,taxvaluedollarcnt,taxamount,yearbuilt, fips, transactiondate
+        from properties_2017
+        join predictions_2017 on properties_2017.parcelid = predictions_2017.parcelid
+        where transactiondate between '2017-05-01' and '2017-08-31' and (propertylandusetypeid ='261' or propertylandusetypeid = '279' or propertylandusetypeid = '262' or propertylandusetypeid = '264')'''
     df = pd.read_sql(query, get_connection('zillow'))  
     
     #replace white space with nulls
@@ -83,7 +84,32 @@ def clean_zillow_data(zillow_df):
     zillow_df['yearbuilt'].fillna(value=mode[0], inplace = True)
     
     return zillow_df
+
+def zillow_engineering(zillow_df):
+    '''
+    this function creates the new columns specified by client, includes, state and county columns, as well as tax rate
+    '''
+    zillow_df['fips'] = zillow_df['fips'].astype(str)
+    zillow_df.loc[zillow_df['fips'].str[0] == '6','State'] = 'California'
+    zillow_df.loc[zillow_df['fips'].str.contains('111'),'County'] = 'Ventura'
+    zillow_df.loc[zillow_df['fips'].str.contains('037'),'County'] = 'Los Angeles'
+    zillow_df.loc[zillow_df['fips'].str.contains('059'),'County'] = 'Orange'
+    zillow_df['fips'] = zillow_df['fips'].astype(float)
     
+    zillow_df['tax_rate'] = (zillow_df['taxamount']/zillow_df['taxvaluedollarcnt'] * 100)
+    
+    return zillow_df
+
+def handle_outliers(col):
+    q1, q3
+    
+
+
+    
+    
+    
+    
+    return zillow_df
   
     
 def split_for_model(df):
@@ -93,9 +119,9 @@ def split_for_model(df):
     Returns train, validate, and test dfs.
     '''
     train_validate, test = train_test_split(df, test_size=.2, 
-                                        random_state=765)
+                                        random_state=333)
     train, validate = train_test_split(train_validate, test_size=.3, 
-                                   random_state=231)
+                                   random_state=333)
     
     print('train{},validate{},test{}'.format(train.shape, validate.shape, test.shape))
     return train, validate, test

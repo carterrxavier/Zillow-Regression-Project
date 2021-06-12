@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import RobustScaler, MinMaxScaler, StandardScaler
 
 
-def scale_telco_data(train, validate, test, scale_type = None):
+def scale_data(train, validate, test, scale_type = None):
     '''
     returns scaled data of specified type into data frame
     '''
