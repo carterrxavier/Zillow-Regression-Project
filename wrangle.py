@@ -58,7 +58,7 @@ def get_zillow_data():
     
     else:
         query =  '''
-      select properties_2017.parcelid, bedroomcnt,bathroomcnt,calculatedfinishedsquarefeet,taxvaluedollarcnt,taxamount,yearbuilt, fips, transactiondate
+      select properties_2017.parcelid, bedroomcnt,bathroomcnt,calculatedfinishedsquarefeet,taxvaluedollarcnt,taxamount,yearbuilt,regionidzip, fips, transactiondate
         from properties_2017
         join predictions_2017 on properties_2017.parcelid = predictions_2017.parcelid
         where transactiondate between '2017-05-01' and '2017-08-31' and (propertylandusetypeid ='261' or propertylandusetypeid = '279' or propertylandusetypeid = '262' or propertylandusetypeid = '264')'''
@@ -70,18 +70,34 @@ def get_zillow_data():
     df.to_csv(file_name, index = False)
     return df
 
+def summerize_df(df):
+    print('-----shape------')
+    print('{} rows and {} columns'.format(df.shape[0], df.shape[1]))
+    print('---info---')
+    print(df.info())
+    print(df.describe())
+    print('--nulls--')
+    df = df.replace(r'^\s*$', np.NaN, regex=True)
+    print(df.isna().sum())
+
 
 def clean_zillow_data(zillow_df):
     '''
     this function cleans data for zillow data 
     '''
     zillow_df = zillow_df.dropna(axis=0, subset=['bedroomcnt'])
+    zillow_df = zillow_df.dropna(axis=0, subset=['bathroomcnt'])
+    zillow_df = zillow_df.dropna(axis=0, subset=['regionidzip'])
+    zillow_df['regionidzip'] = zillow_df['regionidzip'].astype(str)
     zillow_df = zillow_df.dropna(how='all')
     zillow_df = zillow_df.dropna(axis=0, subset=['calculatedfinishedsquarefeet'])
     zillow_df['taxvaluedollarcnt'].fillna(zillow_df['taxvaluedollarcnt'].mean(), inplace = True)
-    zillow_df['taxamount'].fillna(zillow_df['taxamount'].mean(), inplace = True)
     mode = zillow_df[(zillow_df['yearbuilt'] > 1947) & (zillow_df['yearbuilt'] <= 1957)].yearbuilt.mode()
     zillow_df['yearbuilt'].fillna(value=mode[0], inplace = True)
+    
+   
+
+
     
     return zillow_df
 
@@ -96,7 +112,7 @@ def zillow_engineering(zillow_df):
     zillow_df.loc[zillow_df['fips'].str.contains('059'),'County'] = 'Orange'
     zillow_df['fips'] = zillow_df['fips'].astype(float)
     
-    zillow_df['tax_rate'] = (zillow_df['taxamount']/zillow_df['taxvaluedollarcnt'] * 100)
+    zillow_df['taxrate'] = round(zillow_df['taxamount']/zillow_df['taxvaluedollarcnt'] * 100 ,2)
     
     return zillow_df
 

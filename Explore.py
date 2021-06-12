@@ -6,12 +6,32 @@ import math
 import itertools
 
 def get_distribution(df):
-    df.hist(grid = False, bins = 10)
+    for i in df.columns:
+        plt.figure(figsize=(9,5))
+        sns.histplot(data = df, x=i)
     plt.show()
+    
+def graph_distribution(df, target, x):
+        g = sns.FacetGrid(df, col='County', hue='County',height=5)
+        plt.figure(figsize=(9,5))
+        g.map(sns.kdeplot, x)
+        plt.xlim(0,5)
+        plt.show()
+      
+    
+    
+    
+def get_heatmap(df, target):
+    '''
+    This method will return a heatmap of all variables and there relation to churn
+    '''
+    plt.figure(figsize=(15,12))
+    heatmap = sns.heatmap(df.corr()[[target]].sort_values(by=target, ascending=False), annot=True)
+    heatmap.set_title('Feautures  Correlating with {}'.format(target))
+    
+    return heatmap
 
-def get_heatmap(df):
-    sns.heatmap(df.corr(),annot=True, mask= np.triu(df.corr()))
-    plt.show()
+
     
 def plot_variable_pairs(df, cont_vars = 2):
     combos = itertools.combinations(df,cont_vars)
@@ -29,7 +49,7 @@ def month_to_year(df):
 def plot_cat_and_cont(cat_var, con_var, df):
     for i in cat_var:
         for j in con_var:
-            plt.figure(figsize=(9,5))
+            plt.figure(figsize=(20,12))
             plt.subplot(131)
             sns.swarmplot(x=i, y=j, data=df)
             plt.subplot(132)
