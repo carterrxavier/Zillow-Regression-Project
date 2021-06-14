@@ -11,6 +11,8 @@ def get_distribution(df):
         sns.histplot(data = df, x=i)
     plt.show()
     
+    
+    
 def graph_distribution(df, target, x):
         g = sns.FacetGrid(df, col='County', hue='County',height=5)
         plt.figure(figsize=(9,5))
@@ -40,10 +42,7 @@ def plot_variable_pairs(df, cont_vars = 2):
         sns.regplot(data=df, x=i[0], y =i[1],line_kws={"color":"red"})
         plt.show()
         
-def month_to_year(df):
-    df["tenure_in_years"] = df.apply(lambda df: math.floor(df.tenure / 12), axis=1)
-    #df["tenure_in_months"] = df.apply(lambda df: df.tenure % 12, axis = 1)
-    return df
+
 
 
 def plot_cat_and_cont(cat_var, con_var, df):

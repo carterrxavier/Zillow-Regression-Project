@@ -95,7 +95,12 @@ def clean_zillow_data(zillow_df):
     mode = zillow_df[(zillow_df['yearbuilt'] > 1947) & (zillow_df['yearbuilt'] <= 1957)].yearbuilt.mode()
     zillow_df['yearbuilt'].fillna(value=mode[0], inplace = True)
     
-   
+    zillow_df['transactiondate'] = pd.to_datetime(zillow_df['transactiondate'],dayfirst=True)
+    zillow_df['transactiondate'] = zillow_df['transactiondate'].dt.month
+    zillow_df = zillow_df.rename(columns={'transactiondate':'transactionmonth'})
+    
+
+
 
 
     
