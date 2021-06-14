@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import math
 from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
 from sklearn.feature_selection import SelectKBest, f_regression, RFE
+from sklearn.preprocessing import PolynomialFeatures
 import scipy.stats as stats
 
 
@@ -23,14 +24,14 @@ def plot_residuals(act, pred, res, baseline):
     
     
     ax = plt.subplot(223)
-    ax.scatter(act, pred)
+    ax.scatter(act, pred, cmap='Bupu')
     ax.set(xlabel='actual', ylabel='prediction')
     ax.plot(act, act,  ls=":", color='black')
     
     ax = plt.subplot(224)
-    ax.scatter(act, res)
+    ax.scatter(act, res, cmap='Bupu')
     ax.set(xlabel='actual', ylabel='residual')
-    ax.hlines(0, *ax.get_xlim(), ls=":",color='black')
+    ax.hlines(0, *ax.get_xlim(), ls=":",color='grey')
     
     plt.show()
     
@@ -105,8 +106,9 @@ def get_pearsons(con_var, target, alpha, df):
         else:
             print('p value {} is not less than alpha {} , we  fail to reject our null hypothesis'.format(p,alpha))
         print('-------------------------------------')
+        
 
-def get_model_results(X_train, y_train, X, y, target, model='linear', alpha = 0, power = 0, graph = False):
+def get_model_results(X_train, y_train, X, y, target, model='linear', alpha = 0, power = 0, graph = False, degree=2):
     results = y.copy()
     
     if model == "linear":
@@ -123,6 +125,19 @@ def get_model_results(X_train, y_train, X, y, target, model='linear', alpha = 0,
         glm = TweedieRegressor(power=power, alpha=alpha)
         glm.fit(X_train, y_train)
         results['pred'] = glm.predict(X)
+    elif model == 'poly':
+        pf = PolynomialFeatures(degree=degree)
+        
+        X_train_degree2 = pf.fit_transform(X_train)
+        X_degree_2 = pf.transform(X)
+        
+        
+        lm = LinearRegression(normalize=True)
+        lm.fit(X_train_degree2, y_train)  
+        results['pred'] = lm.predict(X_degree_2)
+        
+        
+        
     
     results = get_risiduals(results, y[target],results.pred)
     rmse =    regression_errors(y[target],results.pred)[2]
@@ -135,6 +150,8 @@ def get_model_results(X_train, y_train, X, y, target, model='linear', alpha = 0,
     
     if graph == True:
         plot_residuals(results[target], results.pred, results.risiduals, results.baseline_risiduals)
+        
+    return rmse
 
     
     

@@ -14,12 +14,13 @@ def get_distribution(df):
     
     
 def graph_distribution(df, target, x):
-        g = sns.FacetGrid(df, col='County', hue='County',height=5)
-        plt.figure(figsize=(9,5))
-        g.map(sns.kdeplot, x)
-        plt.xlim(0,5)
-        plt.show()
-      
+    plt.figure(figsize=(14,10))
+    sns.histplot(data=df, x=x, hue=target, kde = False, bins = 1200)
+    plt.xlim(0.5, 3)
+    plt.xlabel('{} in Percentage'.format(x))
+
+
+        
     
     
     
@@ -39,7 +40,7 @@ def plot_variable_pairs(df, cont_vars = 2):
     combos = itertools.combinations(df,cont_vars)
     for i in combos:
         plt.figure(figsize=(8,3))
-        sns.regplot(data=df, x=i[0], y =i[1],line_kws={"color":"red"})
+        sns.regplot(data=df, x=i[0], y =i[1],line_kws={"color":"black"},scatter_kws={"color":'pink','alpha':0.5})
         plt.show()
         
 
