@@ -2,6 +2,7 @@
 ## Regression Project: Home Value Prediction
  - Xavier Carter
  - 15 June 2021
+ - slide show link https://docs.google.com/presentation/d/19y-2ysvgP-KEZIbFGiu3ir-gLiJVV2EtzH1L2RSV2m0/edit?usp=sharing
 # Project Summary
 ## Project Description
  - The Zillow Data Science team wants to be able to predict the values of single unit properties that the tax district assesses using the property data from those with a transaction during the "hot months" (in terms of real estate demand) of May-August, 2017.
