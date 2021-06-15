@@ -1,10 +1,10 @@
 # Zillow-Regression-Project
-Regression Project: Estimating Home Value
-Chad Allen
-15 June 2021
-Project Summary
-Project Description
-The Zillow Data Science team wants to be able to predict the values of single unit properties that the tax district assesses using the property data from those with a transaction during the "hot months" (in terms of real estate demand) of May-August, 2017.
+## Regression Project: Prediction Home Value
+ - Xavier Carter
+ - 15 June 2021
+# Project Summary
+## Project Description
+ - The Zillow Data Science team wants to be able to predict the values of single unit properties that the tax district assesses using the property data from those with a transaction during the "hot months" (in terms of real estate demand) of May-August, 2017.
 
 Additionally, information is needed outside of the model. Because property taxes are assessed at the county level, the team would like to know:
 
