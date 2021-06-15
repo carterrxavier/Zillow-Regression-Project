@@ -60,7 +60,7 @@ ___
 ___
 
 ##### Plan -> Acquire -> Prepare -> **Explore ->** Model -> Deliver
-> - Answer key questions, my hypotheses, and figure out the features that can be used in a classification model to best predict the target variable, churn 
+> - Answer key questions, my hypotheses, and figure out the features that can be used in a classification model to best predict the target variable, house value
 > - Run at least 2 statistical tests in data exploration.
 > - Create visualizations and run statistical tests that work toward discovering variable relationships (independent with independent and independent with dependent). 
 > - Summarize my conclusions, provide clear answers to my specific questions, and summarize any takeaways/action plan from the work above.
