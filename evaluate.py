@@ -17,11 +17,11 @@ def plot_residuals(act, pred, res, baseline):
     plt.figure(figsize=(20,12))
     plt.subplot(221)
     plt.title('Residuals')
-    res.hist(color='#dbd86e')
+    res.hist(bins=20,color='#dbd86e')
     plt.grid(b=None)
     plt.subplot(222)
     plt.title('Baseline Residuals')
-    baseline.hist()
+    baseline.hist(bins=20)
     plt.grid(b=None)
     
    
