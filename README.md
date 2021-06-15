@@ -1,5 +1,5 @@
 # Zillow-Regression-Project
-## Regression Project: Prediction Home Value
+## Regression Project: Home Value Prediction
  - Xavier Carter
  - 15 June 2021
 # Project Summary
