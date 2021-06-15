@@ -14,24 +14,27 @@ def get_risiduals(df ,act, pred):
     return df
 
 def plot_residuals(act, pred, res, baseline):
-    plt.figure(figsize=(16,9))
+    plt.figure(figsize=(20,12))
     plt.subplot(221)
     plt.title('Residuals')
-    res.hist()
+    res.hist(color='#dbd86e')
+    plt.grid(b=None)
     plt.subplot(222)
     plt.title('Baseline Residuals')
     baseline.hist()
+    plt.grid(b=None)
     
+   
     
     ax = plt.subplot(223)
-    ax.scatter(act, pred, cmap='Bupu')
+    ax.scatter(act, pred, color='#5e338a')
     ax.set(xlabel='actual', ylabel='prediction')
     ax.plot(act, act,  ls=":", color='black')
     
     ax = plt.subplot(224)
-    ax.scatter(act, res, cmap='Bupu')
+    ax.scatter(act, res, color ='#5e338a')
     ax.set(xlabel='actual', ylabel='residual')
-    ax.hlines(0, *ax.get_xlim(), ls=":",color='grey')
+    ax.hlines(0, *ax.get_xlim(), ls=":",color='black')
     
     plt.show()
     
